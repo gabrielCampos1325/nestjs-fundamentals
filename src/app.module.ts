@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { CommonModule } from './common/common.module';
 import * as joi from '@hapi/joi';
 
 @Module({
@@ -24,6 +25,7 @@ import * as joi from '@hapi/joi';
       autoLoadEntities: true, // models will be loaded automatically
       synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
     }),
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

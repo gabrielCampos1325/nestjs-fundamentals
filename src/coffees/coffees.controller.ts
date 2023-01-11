@@ -14,19 +14,29 @@ import { CoffeesService } from 'src/coffees/coffees.service';
 import { resourceLimits } from 'worker_threads';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
+import { Public } from 'src/common/decorators/public.decorator';
+import { ParseIntPipe } from 'src/common/pipes/parse-int/parse-int.pipe';
+import { ProtocolDecorator } from 'src/common/decorators/protocol.decorator';
 
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
+  @Public()
   @Get()
-  findAll(@Query() paginationQuery) {
-    // const { limit, offset } = paginationQuery;
+  async findAll(
+    @ProtocolDecorator('https') protocol,
+    @Query() paginationQuery,
+  ) {
+    /*await new Promise(() =>
+      setTimeout(() => this.coffeesService.findAll(paginationQuery), 4000),
+    );*/
+    console.log('protocol', protocol);
     return this.coffeesService.findAll(paginationQuery);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.coffeesService.findOne(id);
   }
 
