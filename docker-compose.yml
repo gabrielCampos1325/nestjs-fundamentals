@@ -9,6 +9,15 @@ services:
        POSTGRES_USER: admin
        POSTGRES_PASSWORD: pass123
        POSTGRES_DB: nest_test_db
+  db-test:
+    image:  postgres
+    restart: always 
+    ports:
+      - "5433:5432"
+    environment:
+       POSTGRES_USER: admin
+       POSTGRES_PASSWORD: pass123
+       POSTGRES_DB: nest_test_db
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4
