@@ -10,14 +10,17 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CoffeesService } from 'src/coffees/coffees.service';
+import { CoffeesService } from './coffees.service';
 import { resourceLimits } from 'worker_threads';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
-import { Public } from 'src/common/decorators/public.decorator';
-import { ParseIntPipe } from 'src/common/pipes/parse-int/parse-int.pipe';
-import { ProtocolDecorator } from 'src/common/decorators/protocol.decorator';
+import { Public } from '../common/decorators/public.decorator';
+import { ParseIntPipe } from '../common/pipes/parse-int/parse-int.pipe';
+import { ProtocolDecorator } from '../common/decorators/protocol.decorator';
+import { ApiForbiddenResponse } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger/dist';
 
+@ApiTags('coffees')
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
@@ -35,6 +38,7 @@ export class CoffeesController {
     return this.coffeesService.findAll(paginationQuery);
   }
 
+  @ApiForbiddenResponse({ description: 'Forbidden' })
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: string) {
     return this.coffeesService.findOne(id);
